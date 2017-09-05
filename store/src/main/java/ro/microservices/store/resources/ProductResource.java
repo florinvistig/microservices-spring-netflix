@@ -22,17 +22,12 @@ public class ProductResource {
 	public ProductResource(ProductService productService) {
 		this.productService= productService;
 	}
-	
+
 	@GetMapping("/{code}")
 	public ResponseEntity<ProductModel> getProduct(@PathVariable("code") final String code) {
-		
-		System.out.println("=================================");
-		System.out.println("Searching for :: " + code);
-		System.out.println("=================================");
-		
 		return productService.getByCode(code)
-				.map(p -> ResponseEntity.ok(p))
-				.orElseGet(() -> new ResponseEntity("We are sorry for your stupidness.", HttpStatus.NOT_FOUND))
+				.map(ResponseEntity::ok)
+				.orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND))
 		;
 	}
 	

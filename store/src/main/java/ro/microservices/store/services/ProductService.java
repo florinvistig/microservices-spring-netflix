@@ -31,7 +31,7 @@ public class ProductService {
 	}
 	
 	private ProductModel productToProductModel(Product product) {
-		InventoryModel productInv = inventoryClient.getProductInventory(product.getCode());
+		InventoryModel productInv = inventoryClient.getProductInventory(product.getCode()).getBody();
 		return ProductMapper.toModel(product, productInv);
 	}
 }

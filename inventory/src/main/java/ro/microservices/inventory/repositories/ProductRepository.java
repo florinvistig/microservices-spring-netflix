@@ -12,7 +12,7 @@ import ro.microservices.inventory.entities.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 	
-	@RestResource(path="by-code")
+	@RestResource
 	Collection<Product> findByCode(@Param("code") final String code);
-	
+
 }
