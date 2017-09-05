@@ -2,6 +2,8 @@ package ro.microservices.store.services;
 
 import java.util.Optional;
 
+import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.messaging.Message;
 import org.springframework.stereotype.Service;
 
 import ro.microservices.store.clients.InventoryClient;
@@ -34,4 +36,13 @@ public class ProductService {
 		InventoryModel productInv = inventoryClient.getProductInventory(product.getCode()).getBody();
 		return ProductMapper.toModel(product, productInv);
 	}
+
+	@StreamListener("stockChannel")
+	public void onReceiving(final Message<InventoryModel> message){
+		InventoryModel payload = message.getPayload();
+
+		System.out.println("received message from kafka " + payload);
+	}
 }
+
+
