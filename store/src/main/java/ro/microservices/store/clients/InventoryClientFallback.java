@@ -11,14 +11,9 @@ import java.math.BigDecimal;
 public class InventoryClientFallback implements FallbackFactory<InventoryClient> {
     @Override
     public InventoryClient create(Throwable throwable) {
-        return new InventoryClient() {
-            @Override
-            public ResponseEntity<InventoryModel> getProductInventory(String code) {
-                return ResponseEntity.ok(InventoryModel.builder()
-                        .price(BigDecimal.ZERO)
-                        .stock(0)
-                        .build());
-            }
-        };
+        return (String code) -> ResponseEntity.ok(InventoryModel.builder()
+                    .price(BigDecimal.ZERO)
+                    .stock(0)
+                    .build());
     }
 }

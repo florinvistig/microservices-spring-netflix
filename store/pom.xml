@@ -50,6 +50,10 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream-binder-kafka</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-oauth2</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -70,6 +74,11 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpcore</artifactId>
 		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>io.jmnarloch</groupId>-->
+			<!--<artifactId>feign-oauth2-spring-cloud-starter</artifactId>-->
+			<!--<version>1.0.0</version>-->
+		<!--</dependency>-->
 	</dependencies>
 
 	<build>
@@ -78,6 +87,29 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <baseImage>anapsix/alpine-java:8</baseImage>
+                    <registryUrl>docker.io</registryUrl>
+                    <imageName>esolutionsacademy/store-florin</imageName>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                    <imageTags>
+                        <imageTag>${buildNumber}</imageTag>
+                        <imageTag>latest</imageTag>
+                    </imageTags>
+                    <entryPoint>exec java $JAVA_OPTS -jar ${project.build.finalName}.jar</entryPoint>
+                    <useConfigFile>true</useConfigFile>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
